@@ -26,7 +26,7 @@ public class SetCommonChest implements CommandExecutor {
 
         Player player = (Player) sender;
         if (player.getLocation().getBlock().getType() == Material.CHEST) {
-
+//
         } else {
             player.sendMessage("Trebuie sa stai pe un chest!");
         }
