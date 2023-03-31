@@ -18,9 +18,16 @@ timer_Type: 'seconds' #user MINUTES or SECONDS
 round_tine: 1
 common_chest:
   items: 'diamond'
-spawn1:
-  x:
-  y:
-  z:
-  world:
-
+spawn:
+  0:
+    x:
+    Y:
+    Z:
+  1:
+    x:
+    Y:
+    Z:
+  2:
+    x:
+    Y:
+    Z:

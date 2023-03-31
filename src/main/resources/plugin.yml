@@ -6,3 +6,4 @@ commands:
   set:
   set_spawn:
   first_spawn:
+  common_chest:

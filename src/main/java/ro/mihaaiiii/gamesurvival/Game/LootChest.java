@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 public class LootChest {
 
-
     private Long idLootChest;
     private List<ItemStack> items;
     private ChestType chestType;
