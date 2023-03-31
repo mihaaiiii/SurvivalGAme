@@ -1,0 +1,26 @@
+#DataBases
+db_host: 'localhost'
+db_name: 'survivalgame'
+db_port: 3306
+db_user: 'root'
+db_password: 'root'
+
+#SurvivalGame set_up
+max_player_arena: 1
+default_spawn:
+  world: 'world'
+  x: 4
+  y: 4
+  z: 4
+  pitch: 4
+  yaw: 4
+timer_Type: 'seconds' #user MINUTES or SECONDS
+round_tine: 1
+common_chest:
+  items: 'diamond'
+spawn1:
+  x:
+  y:
+  z:
+  world:
+

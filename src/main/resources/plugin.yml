@@ -1,0 +1,8 @@
+name: GameSurvival
+version: '${project.version}'
+main: ro.mihaaiiii.gamesurvival.GameSurvival
+api-version: 1.17
+commands:
+  set:
+  set_spawn:
+  first_spawn:
