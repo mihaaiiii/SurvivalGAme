@@ -6,7 +6,7 @@ db_user: 'root'
 db_password: 'root'
 
 #SurvivalGame set_up
-max_player_arena: 1
+max_player_arena: 2
 default_spawn:
   world: 'world'
   x: 4
@@ -14,20 +14,28 @@ default_spawn:
   z: 4
   pitch: 4
   yaw: 4
-timer_Type: 'seconds' #user MINUTES or SECONDS
-round_tine: 1
-common_chest:
-  items: 'diamond'
-spawn:
+random_amount: 13
+spawnPlayer:
   0:
+    world:
     x:
     Y:
     Z:
-  1:
-    x:
-    Y:
-    Z:
-  2:
-    x:
-    Y:
-    Z:
+#user MINUTES or SECONDS
+timer_Type: 'seconds'
+
+#Round tine
+round_tine: 1
+
+#Chest settings
+common_chest:
+  items:
+    - 'stone'
+    - 'cactus'
+    - 'diamond_sword:1'
+  location:
+    '0':
+      world: test
+      x: -522
+      y: 70
+      z: 16

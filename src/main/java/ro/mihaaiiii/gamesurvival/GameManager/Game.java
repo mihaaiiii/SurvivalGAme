@@ -9,11 +9,16 @@ import java.awt.*;
 @Getter
 public class Game {
     private GameSurvival plugin;
-    private SetUpGame setUpGame = SetUpGame.getInstance(plugin);
+    private SetUpGame setUpGame;
     private TimerType timerType;
+
+    // teleporteaza jucatorii la locatiile stabilite
+    // stabileste un tip pentru loot apoi fa ca o bariera sa se miste
+
 
     public Game(GameSurvival plugin) {
         this.plugin = plugin;
+        setUpGame = SetUpGame.getInstance(plugin);
         setUpGame.getArena().setArenaState(ArenaState.WAITING);
         timerType = TimerType.SECONDS;
         System.out.println("GCE SE PETRECE AICI");

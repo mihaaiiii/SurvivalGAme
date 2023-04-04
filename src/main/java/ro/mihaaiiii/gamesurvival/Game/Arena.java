@@ -1,32 +1,42 @@
 package ro.mihaaiiii.gamesurvival.Game;
 
 import lombok.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class Arena {
 
-    private Long idArena; //id-ul arenei
-    private Map<String, Location> locations; // locatia pe harta a jucatorilor
-    private Map<Location, LootChest> chests;
+    private int idArena;
+    private List<LootChest> chests;
     private List<Location> locationSpawn;
-    private Set<Player> players;
+    private List<Player> players;
     private int maxPlayers;
     private ArenaState arenaState;
 
     public Arena() {
-        chests = new HashMap<>();
-        players = new HashSet<>();
-        locations = new HashMap<>();
-        maxPlayers = 2;
+        idArena = 1;
+        chests = new ArrayList<>();
+        players = new ArrayList<>();
         arenaState = ArenaState.WAITING;
         System.out.println("AICI ESTE ARENA");
 
     }
 
-
+    @Override
+    public String toString() {
+        return "Arena{" +
+                "idArena=" + idArena +
+                ", chests=" + chests +
+                ", locationSpawn=" + locationSpawn +
+                ", players=" + players +
+                ", maxPlayers=" + maxPlayers +
+                ", arenaState=" + arenaState +
+                '}';
+    }
 }

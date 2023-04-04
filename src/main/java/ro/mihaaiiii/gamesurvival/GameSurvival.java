@@ -1,5 +1,7 @@
 package ro.mihaaiiii.gamesurvival;
 
+import org.bukkit.Bukkit;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,27 +12,28 @@ import ro.mihaaiiii.gamesurvival.command.SetCommonChest;
 import ro.mihaaiiii.gamesurvival.databases.commectionDB.MariaDBConnection;
 import ro.mihaaiiii.gamesurvival.listener.QuitListener;
 
+//TODO SA NU UITI DE MESAJE
 public class GameSurvival extends JavaPlugin {
-    private SetUpGame setUP = SetUpGame.getInstance(this);
     private Game game;
     private MariaDBConnection db;
 
 
     @Override
     public void onEnable() {
-        System.out.println("The plugin in online");
-        this.getCommand("set").setExecutor(this);
-        //  new EventClickChest(this);
-        //  new JoinListener(this);
-        //     new SetSpawn(this);
-        //    new SetSpawnInArena(this);
+        SetUpGame.getInstance(this);
+     //   game = new Game(this);
+        Bukkit.getServer().createWorld(new WorldCreator("test"));
+//        ChestFactory chestFactory = new ChestFactory(ChestType.COMMON, this);
         new SetCommonChest(this);
-        this.getServer().getPluginManager().registerEvents(new QuitListener(this), this);
-        db = new MariaDBConnection(this);
-        System.out.println("AICI ESTE SURVIVALGAME");
-        load();
+//        System.out.println("The plugin in online");
+//        this.getCommand("set").setExecutor(this);
+//        //  new EventClickChest(this);
+//        new JoinListener(this);
 
-        // Plugin startup logic
+        this.getServer().getPluginManager().registerEvents(new QuitListener(this), this);
+//        db = new MariaDBConnection(this);
+//        System.out.println("AICI ESTE SURVIVALGAME");
+        load();
 
     }
 

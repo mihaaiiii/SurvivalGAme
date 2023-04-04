@@ -5,5 +5,5 @@ api-version: 1.17
 commands:
   set:
   set_spawn:
-  first_spawn:
+  setPspawn:
   common_chest:

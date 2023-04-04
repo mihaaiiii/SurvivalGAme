@@ -8,16 +8,18 @@ import ro.mihaaiiii.gamesurvival.GameManager.SetUpGame;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 
 public class SetSpawnInArena implements CommandExecutor {
+    int count = 0;
     private GameSurvival plugin;
     private SetUpGame setUpGame = SetUpGame.getInstance(plugin);
 
     public SetSpawnInArena(GameSurvival plugin) {
         this.plugin = plugin;
-        plugin.getCommand("first_spawn").setExecutor(this);
+        plugin.getCommand("setPspawn").setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (!(sender instanceof Player)) {
             return false;
         }
@@ -25,20 +27,17 @@ public class SetSpawnInArena implements CommandExecutor {
         if (!player.isOp()) {
             return false;
         }
-        if (args.length == 0 || args.length < 1) {
-            return false;
-        }
         int x = player.getLocation().getBlockX();
         int y = player.getLocation().getBlockY();
         int z = player.getLocation().getBlockZ();
         String world = player.getLocation().getWorld().getName();
-        plugin.getConfig().set("spawn1.x", x);
-        plugin.getConfig().set("spawn1.y", x);
-        plugin.getConfig().set("spawn1.z", x);
-        plugin.getConfig().set("spawn1.world", world);
+        plugin.getConfig().set("spawnPlayer." + count + ".x", x);
+        plugin.getConfig().set("spawnPlayer." + count + ".y", y);
+        plugin.getConfig().set("spawnPlayer." + count + ".z", z);
+        plugin.getConfig().set("spawnPlayer." + count + ".world", world);
         plugin.saveConfig();
-        System.out.println("set first spawn");
+        count++;
+        System.out.println("The spawn whit number " + count + " has ben set!");
         return true;
-
     }
 }

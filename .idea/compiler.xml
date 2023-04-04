@@ -10,8 +10,5 @@
         <module name="GameSurvival" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="GameSurvival" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,8 +1,5 @@
 package ro.mihaaiiii.gamesurvival.listener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,26 +23,14 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
-        double x = plugin.getConfig().getDouble("default_spawn.x");
-        double y = plugin.getConfig().getDouble("default_spawn.y");
-        double z = plugin.getConfig().getDouble("default_spawn.z");
-        String world = plugin.getConfig().getString("default_spawn.world");
         Player player = event.getPlayer();
-        Location spawn = new Location(Bukkit.getWorld(world), x, y, z);
-
-        game.addPlayersToArena(player);
-        player.teleport(spawn);
-
-
-        player.sendMessage(game.getArena().getPlayers().toString());
-    }
-
-    @EventHandler
-    public void entity(PlayerMoveEvent event) {
-        if (event.getPlayer().getLocation().getBlock().getType() == Material.CHEST) {
-            System.out.println("Chest");
+        if (SetUpGame.getInstance(plugin).isFull()) {
+            player.sendMessage("Arena is full");
         } else {
-          //  System.out.println(event.getPlayer().getLocation().getBlock().getType());
+            int x = SetUpGame.getInstance(plugin).getArena().getPlayers().size();
+            player.sendMessage("Sunt -> " + x + " Player in arena");
         }
+
+
     }
 }
