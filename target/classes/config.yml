@@ -7,20 +7,43 @@ db_password: 'root'
 
 #SurvivalGame set_up
 max_player_arena: 2
-default_spawn:
-  world: 'world'
-  x: 4
-  y: 4
-  z: 4
-  pitch: 4
-  yaw: 4
+npc_location:
+  world: 'test'
+  x: -518
+  y: 69
+  z: 28.36
+  pitch: -179.9
+  yaw: -6
+arenas: #spawn in arena
+  spawn_location:
+    '1':
+      world: 'test'
+      x: -511
+      y: 69
+      z: 27
+      pitch: 104.4
+      yaw: 9.5
+    '2':
+      world: 'test'
+      x: -511
+      y: 69
+      z: 29
+      pitch: 104.4
+      yaw: 9.5
+    '3':
+      world: 'test'
+      x: -511
+      y: 69
+      z: 29
+      pitch: 104.4
+      yaw: 9.5
 random_amount: 13
 spawnPlayer:
-  0:
-    world:
-    x:
-    Y:
-    Z:
+  '0':
+    x: -522
+    y: 69
+    z: 17
+    world: 'test'
 #user MINUTES or SECONDS
 timer_Type: 'seconds'
 
@@ -32,10 +55,10 @@ common_chest:
   items:
     - 'stone'
     - 'cactus'
-    - 'diamond_sword:1'
+    - 'diamond_sword'
   location:
     '0':
       world: test
       x: -522
-      y: 70
+      y: 69
       z: 16

@@ -13,7 +13,7 @@ import java.util.List;
 public class SetCommonChest implements CommandExecutor {
 
     private GameSurvival plugin;
-    int count;
+    int count = 1;
 
     public SetCommonChest(GameSurvival plugin) {
         this.plugin = plugin;
@@ -33,6 +33,7 @@ public class SetCommonChest implements CommandExecutor {
         plugin.getConfig().set("common_chest.location." + count + ".z", player.getLocation().getBlockZ());
         plugin.saveConfig();
         count++;
+        player.sendMessage("");
         return true;
     }
 

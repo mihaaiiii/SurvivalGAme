@@ -4,13 +4,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import ro.mihaaiiii.gamesurvival.GameManager.SetUpGame;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 
 public class SetSpawnInArena implements CommandExecutor {
-    int count = 0;
+    int count = 1;
     private GameSurvival plugin;
-    private SetUpGame setUpGame = SetUpGame.getInstance(plugin);
 
     public SetSpawnInArena(GameSurvival plugin) {
         this.plugin = plugin;

@@ -25,9 +25,9 @@ public class SetSpawn implements CommandExecutor {
         Player player = (Player) sender;
 
         plugin.getConfig().set("default_spawn.world", player.getWorld().getName());
-        plugin.getConfig().set("default_spawn.x", player.getLocation().getX());
-        plugin.getConfig().set("default_spawn.y", player.getLocation().getY());
-        plugin.getConfig().set("default_spawn.z", player.getLocation().getZ());
+        plugin.getConfig().set("default_spawn.x", player.getLocation().getBlockX());
+        plugin.getConfig().set("default_spawn.y", player.getLocation().getBlockY());
+        plugin.getConfig().set("default_spawn.z", player.getLocation().getBlockZ());
         plugin.getConfig().set("default_spawn.pitch", player.getLocation().getPitch());
         plugin.getConfig().set("default_spawn.yaw", player.getLocation().getYaw());
         plugin.saveConfig();

@@ -1,52 +1,61 @@
 package ro.mihaaiiii.gamesurvival.GameManager;
 
 import lombok.Getter;
-import ro.mihaaiiii.gamesurvival.Game.ArenaState;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
+import ro.mihaaiiii.gamesurvival.fileManager.DefaultConfig;
+import ro.mihaaiiii.gamesurvival.model.Arena;
+import ro.mihaaiiii.gamesurvival.model.ArenaState;
 
 import java.awt.*;
 
 @Getter
 public class Game {
     private GameSurvival plugin;
-    private SetUpGame setUpGame;
+    private ArenaManager arenaManager;
     private TimerType timerType;
+    private Arena arena;
 
     // teleporteaza jucatorii la locatiile stabilite
     // stabileste un tip pentru loot apoi fa ca o bariera sa se miste
 
 
-    public Game(GameSurvival plugin) {
+    public Game(Arena arena, GameSurvival plugin) {
+        this.arena = arena;
         this.plugin = plugin;
-        setUpGame = SetUpGame.getInstance(plugin);
-        setUpGame.getArena().setArenaState(ArenaState.WAITING);
-        timerType = TimerType.SECONDS;
+        arenaManager = ArenaManager.getInstance(plugin);
+        arena.setArenaState(ArenaState.WAITING);
+        timerType = TimerType.valueOf(DefaultConfig.getTimerTipe());
         System.out.println("GCE SE PETRECE AICI");
-        if (setUpGame.isFull() && setUpGame.getArena().getArenaState() == ArenaState.WAITING) {
-            start();
-            System.out.println("The game is started" + this.toString());
-        }
 
 
         System.out.println("AICI ESTE GAME");
     }
 
-    private void start() {
+    private void startArena() {
 
-        setUpGame.getArena().setArenaState(ArenaState.START);
+        DefaultConfig.getArenaSpaws().forEach(location ->
+                arena.getPlayers().forEach(player -> {
+
+                })
+        );
+
+        arena.setArenaState(ArenaState.START);
         System.out.println("game is started");
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 System.out.println(Color.CYAN + "Arena is started");
-                setUpGame.getArena().setArenaState(ArenaState.WAITING);
-                setUpGame.getArena().getPlayers().clear();
-                System.out.println(Color.red + setUpGame.getArena().getPlayers().toString());
+                arena.setArenaState(ArenaState.WAITING);
+                arena.getPlayers().clear();
+                System.out.println(Color.red + arenaManager.getArena().getPlayers().toString());
 
             }
         }, delay());
 
+    }
+
+    private void stopArena() {
     }
 
     private Long delay() {
