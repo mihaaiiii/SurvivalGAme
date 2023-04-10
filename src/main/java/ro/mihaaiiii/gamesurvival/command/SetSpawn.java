@@ -23,15 +23,15 @@ public class SetSpawn implements CommandExecutor {
             return false;
         }
         Player player = (Player) sender;
-
-        plugin.getConfig().set("default_spawn.world", player.getWorld().getName());
-        plugin.getConfig().set("default_spawn.x", player.getLocation().getBlockX());
-        plugin.getConfig().set("default_spawn.y", player.getLocation().getBlockY());
-        plugin.getConfig().set("default_spawn.z", player.getLocation().getBlockZ());
-        plugin.getConfig().set("default_spawn.pitch", player.getLocation().getPitch());
-        plugin.getConfig().set("default_spawn.yaw", player.getLocation().getYaw());
+        plugin.saveDefaultConfig();
+        plugin.getConfig().set("lobyArena.world", player.getWorld().getName());
+        plugin.getConfig().set("lobyArena.x", player.getLocation().getBlockX());
+        plugin.getConfig().set("lobyArena.y", player.getLocation().getBlockY());
+        plugin.getConfig().set("lobyArenan.z", player.getLocation().getBlockZ());
+        plugin.getConfig().set("lobyArena.pitch", player.getLocation().getPitch());
+        plugin.getConfig().set("lobyArena.yaw", player.getLocation().getYaw());
         plugin.saveConfig();
-        player.sendMessage("the spawh has ben set");
+        player.sendMessage("The loby spawn in arena has setted");
 
         return true;
     }

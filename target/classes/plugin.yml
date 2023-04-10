@@ -12,3 +12,5 @@ commands:
     description: 'seteaza chest'
   join:
     description: 'adauga jucatorii in arena'
+  setNpc:
+    description: 'Set npc join'

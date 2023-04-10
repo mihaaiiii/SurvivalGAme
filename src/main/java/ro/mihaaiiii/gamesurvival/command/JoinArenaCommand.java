@@ -1,6 +1,5 @@
 package ro.mihaaiiii.gamesurvival.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,10 +19,8 @@ public class JoinArenaCommand implements CommandExecutor {
 
     public JoinArenaCommand(GameSurvival plugin) {
         this.plugin = plugin;
-        arenaManager = ArenaManager.getInstance(plugin);
-        plugin.getCommand("join").setExecutor(this);
-
-
+        gameManager = new GameManager(plugin);
+        arenaManager = gameManager.getArenaManager();
     }
 
 
@@ -39,9 +36,8 @@ public class JoinArenaCommand implements CommandExecutor {
                 return true;
             } else {
                 player.sendMessage(MessageUtils.message("&cArena is full"));
-                if (arenaManager.getArena().getArenaState() != ArenaState.START ) {
+                if (arenaManager.getArena().getArenaState() != ArenaState.START) {
                     player.sendMessage(MessageUtils.message("&2The state area is start"));
-                    gameManager = new GameManager(ArenaState.WAITING, plugin);
                     return true;
                 }
 

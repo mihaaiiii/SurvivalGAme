@@ -13,16 +13,18 @@ public class ArenaTimer extends BukkitRunnable {
     private Arena arena;
     int contdow = 59;
     private GameManager gameManager;
+    private ArenaManager arenaManager;
 
 
     public static ArenaTimer getArenaTimer() {
         return arenaTimer;
     }
 
-    public ArenaTimer(GameSurvival plugin, Arena arena) {
+    public ArenaTimer(GameSurvival plugin) {
         arenaTimer = this;
         this.plugin = plugin;
-        this.arena = arena;
+        gameManager = GameManager.getInstance(plugin);
+        arenaManager = gameManager.getArenaManager();
 
 
     }
@@ -40,6 +42,9 @@ public class ArenaTimer extends BukkitRunnable {
         Bukkit.getWorld("test").getWorldBorder().setSize(60);
         System.out.println(" ARENA TIMER: YEY" + contdow);
         System.out.println("Ai oprit yey");
-        gameManager = new GameManager(ArenaState.STOP, plugin);
+        gameManager.getArenaManager().getArena().setArenaState(ArenaState.STOP);
+        gameManager.gameState(gameManager.getArenaManager().getArena().getArenaState());
+
+
     }
 }

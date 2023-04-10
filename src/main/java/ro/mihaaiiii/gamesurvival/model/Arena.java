@@ -1,37 +1,41 @@
 package ro.mihaaiiii.gamesurvival.model;
 
 import lombok.Data;
+import lombok.Setter;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import ro.mihaaiiii.gamesurvival.GameManager.CountDown;
-import ro.mihaaiiii.gamesurvival.GameManager.Game;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Data
 public class Arena {
 
-    private int idArena;
-    private List<LootChest> chests;
-    private List<Location> locationSpawn;
+    private String nameArena;
     private Set<String> players;
+    private List<Location> spawnPlayer;
     private int maxPlayers;
     private ArenaState arenaState;
-    private Game game;
-    private CountDown countDown;
+    private static Arena instance;
+    @Setter
+    private boolean isStarted;
 
-    public Arena() {
-        idArena = 1;
-        chests = new ArrayList<>();
-        players = new HashSet<>();
+    public Arena(String nameArena, boolean isStarted, int maxPlayers, Set<String> players, ArenaState arenaState, List<Location> spawnPlayer) {
+        this.nameArena = nameArena;
+        this.isStarted = isStarted;
+        this.maxPlayers = maxPlayers;
+        this.players = players;
+        this.arenaState = arenaState;
+        this.spawnPlayer = spawnPlayer;
+
 
     }
 
     public void removePlayerFromArena() {
+        System.out.println(ChatColor.BLUE + " s-au dus din arena");
         players.clear();
         arenaPlayer().clear();
     }
@@ -64,16 +68,8 @@ public class Arena {
 
     }
 
-
-    @Override
-    public String toString() {
-        return "Arena{" +
-                "idArena=" + idArena +
-                ", chests=" + chests +
-                ", locationSpawn=" + locationSpawn +
-                ", players=" + players +
-                ", maxPlayers=" + maxPlayers +
-                ", arenaState=" + arenaState +
-                '}';
+    public static Arena getInstance(String nameArena, boolean isStarted, int maxPlayers, Set<String> players, ArenaState arenaState, List<Location> spawnPlayer) {
+        return instance == null ? instance = new Arena(nameArena, isStarted, maxPlayers, players, arenaState, spawnPlayer) : instance;
     }
+
 }

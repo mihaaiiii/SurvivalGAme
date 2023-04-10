@@ -7,42 +7,28 @@ import org.bukkit.WorldBorder;
 import org.bukkit.scheduler.BukkitRunnable;
 import ro.mihaaiiii.gamesurvival.Game.GameManager;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
-import ro.mihaaiiii.gamesurvival.model.Arena;
 import ro.mihaaiiii.gamesurvival.model.ArenaState;
 
 public class CountDown extends BukkitRunnable {
     private static CountDown countDown;
     private GameSurvival plugin;
-    private Arena arena;
-    private ArenaTimer arenaTimer;
-    private ArenaManager arenaManager;
+
     private GameManager gameManager;
 
     int contdow = 16;
 
 
-    public ArenaTimer getArenaTimer() {
-        return arenaTimer;
-    }
-
-    public CountDown(GameSurvival plugin, Arena arena) {
-
-        countDown = this;
-        this.arenaTimer = new ArenaTimer(plugin, arena);
+    public CountDown(GameSurvival plugin) {
         this.plugin = plugin;
-        this.arena = arena;
-        arenaManager = ArenaManager.getInstance(plugin);
+        countDown = this;
+        gameManager = GameManager.getInstance(plugin);
 
 
     }
 
     public void start() {
-
+        gameManager.getArenaManager().chestFill();
         runTaskTimer(plugin, 0, 20);
-    }
-
-    public void startArenaTimer() {
-
     }
 
     public static CountDown getContdown() {
@@ -63,13 +49,15 @@ public class CountDown extends BukkitRunnable {
             worldBorder.setSize(3, 60);
             worldBorder.setWarningDistance(40);
             worldBorder.setDamageAmount(0.2);
-            gameManager = new GameManager(ArenaState.START, plugin);
+            gameManager.getArenaManager().getArena().sendMessage(ChatColor.RED + "teleport Player");
+            gameManager.getArenaManager().getArena().setArenaState(ArenaState.START);
+            gameManager.gameState(gameManager.getArenaManager().getArena().getArenaState());
 
         }
 
         if (contdow <= 10 || contdow % 15 == 0) {
 
-            arena.sendMessage(ChatColor.RED + "Game start in " + contdow + " " + (contdow == 1 ? "" : " s") + ".");
+            gameManager.getArenaManager().getArena().sendMessage(ChatColor.RED + "Game start in " + contdow + " " + (contdow == 1 ? "" : " s") + ".");
         }
 
         contdow--;

@@ -1,6 +1,7 @@
 package ro.mihaaiiii.gamesurvival.GameManager;
 
 import lombok.Getter;
+import ro.mihaaiiii.gamesurvival.Game.GameManager;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 import ro.mihaaiiii.gamesurvival.fileManager.DefaultConfig;
 import ro.mihaaiiii.gamesurvival.model.Arena;
@@ -11,6 +12,7 @@ import java.awt.*;
 @Getter
 public class Game {
     private GameSurvival plugin;
+    private GameManager gameManager;
     private ArenaManager arenaManager;
     private TimerType timerType;
     private Arena arena;
@@ -22,22 +24,14 @@ public class Game {
     public Game(Arena arena, GameSurvival plugin) {
         this.arena = arena;
         this.plugin = plugin;
-        arenaManager = ArenaManager.getInstance(plugin);
+        gameManager = new GameManager(plugin);
+
+        arenaManager = gameManager.getArenaManager();
         arena.setArenaState(ArenaState.WAITING);
         timerType = TimerType.valueOf(DefaultConfig.getTimerTipe());
-        System.out.println("GCE SE PETRECE AICI");
-
-
-        System.out.println("AICI ESTE GAME");
     }
 
     private void startArena() {
-
-        DefaultConfig.getArenaSpaws().forEach(location ->
-                arena.getPlayers().forEach(player -> {
-
-                })
-        );
 
         arena.setArenaState(ArenaState.START);
         System.out.println("game is started");
@@ -55,8 +49,6 @@ public class Game {
 
     }
 
-    private void stopArena() {
-    }
 
     private Long delay() {
         timerType = TimerType.valueOf(plugin.getConfig().getString("timer_Type").toUpperCase());

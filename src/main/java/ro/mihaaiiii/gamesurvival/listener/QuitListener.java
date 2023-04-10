@@ -4,16 +4,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import ro.mihaaiiii.gamesurvival.Game.GameManager;
 import ro.mihaaiiii.gamesurvival.GameManager.ArenaManager;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 
 public class QuitListener implements Listener {
 
     private GameSurvival plugin;
-    ArenaManager set = ArenaManager.getInstance(plugin);
+    private GameManager gameManager;
+    ArenaManager set;
 
     public QuitListener(GameSurvival plugin) {
         this.plugin = plugin;
+        gameManager = new GameManager(plugin);
+        set = gameManager.getArenaManager();
+
     }
 
 
@@ -21,7 +26,7 @@ public class QuitListener implements Listener {
     public void playerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-      //  set.removePlayersToArena(player);
+        //  set.removePlayersToArena(player);
         player.sendMessage(set.getArena().getPlayers().toString());
     }
 }
