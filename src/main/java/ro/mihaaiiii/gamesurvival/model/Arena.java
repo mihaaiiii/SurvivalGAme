@@ -34,11 +34,7 @@ public class Arena {
 
     }
 
-    public void removePlayerFromArena() {
-        System.out.println(ChatColor.BLUE + " s-au dus din arena");
-        players.clear();
-        arenaPlayer().clear();
-    }
+
 
 
     public List<Player> arenaPlayer() {

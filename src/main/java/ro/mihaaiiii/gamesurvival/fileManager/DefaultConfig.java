@@ -5,11 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
+import ro.mihaaiiii.gamesurvival.model.Arena;
+import ro.mihaaiiii.gamesurvival.model.ArenaState;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class DefaultConfig {
@@ -19,14 +19,6 @@ public class DefaultConfig {
     public static void setupConfig(GameSurvival plugin) {
         config = plugin.getConfig();
         plugin.saveDefaultConfig();
-    }
-
-    public static void save() {
-
-    }
-
-    public static String getDataBasesTipe() {
-        return config.getString("db_type").toLowerCase();
     }
 
     public static String getUser() {
@@ -43,7 +35,10 @@ public class DefaultConfig {
 
 
     public static Location getLobby() {
-        return new Location(Bukkit.getWorld(config.getString("lobyArena.world")), config.getDouble("lobyArena.x"), config.getDouble("lobyArena.y"), config.getDouble("lobyArena.z"));
+        return new Location(Bukkit.getWorld(config.getString("lobyArena.world")),
+                config.getDouble("lobyArena.x"),
+                config.getDouble("lobyArena.y"),
+                config.getDouble("lobyArena.z"));
 
     }
 
@@ -60,32 +55,27 @@ public class DefaultConfig {
         return config.getString("timer_Tipe").toUpperCase();
     }
 
-    public static Set<Location> getSpawnPlayerLocation() {
-        Set<Location> locations = new HashSet<>();
-        config.getConfigurationSection("spawnPlayer.").getKeys(false).forEach(key -> {
-
-            Location location = new Location(Bukkit.getServer().getWorld(config.getString("spawnPlayer." + key + ".world")),
-                    config.getDouble("spawnPlayer." + key + ".x"), config.getDouble("spawnPlayer." + key + ".y"),
-                    config.getDouble("spawnPlayer." + key + ".z"));
-            locations.add(location);
-
-        });
-        return locations;
-    }
-
     public static Set<Location> getChestLocation(String type) {
         Set<Location> chests = new HashSet<>();
-        config.getConfigurationSection(type + "_chest.location").getKeys(false).forEach(key -> {
+        config.getConfigurationSection("arenas").getKeys(false).forEach(arena -> {
+            config.getConfigurationSection("arenas." + arena + "." + type + "_chest.location").getKeys(false).forEach(key -> {
 
-            Location location = new Location(Bukkit.getServer().getWorld(config.getString(type + "_chest.location." + key + ".world")),
-                    config.getDouble(type + "_chest.location." + key + ".x"), config.getDouble(type + "_chest.location." + key + ".y"),
-                    config.getDouble(type + "_chest.location." + key + ".z"));
-            chests.add(location);
+                Location location = new Location(Bukkit.getServer().getWorld(config.getString("arenas." + arena + "." + type + "_chest.location." + key + ".world")),
+                        config.getDouble("arenas." + arena + "." + type + "_chest.location." + key + ".x"), config.getDouble("arenas." + arena + "." + type + "_chest.location." + key + ".y"),
+                        config.getDouble("arenas." + arena + "." + type + "_chest.location." + key + ".z"));
+
+                chests.add(location);
+            });
 
         });
+
         return chests;
     }
 
+    public static boolean isArenaInList(String nameArena) {
+        return DefaultConfig.getConfig().getConfigurationSection("arenas").getKeys(false).contains(nameArena);
+
+    }
 
 
     public static List<Location> getArenaSpaws(String name) {
@@ -112,6 +102,19 @@ public class DefaultConfig {
     }
 
 
+    public static HashMap<String, Arena> fllWhitArena() {
+        List<String> name = config.getConfigurationSection("arenas").getKeys(false).stream().collect(Collectors.toList());
+        HashMap<String, Arena> arenas = new HashMap<>();
+        for (int i = 0; i < name.size(); i++) {
+            arenas.put(name.get(i),
+                    new Arena(name.get(i),
+                            false, DefaultConfig.getMaxPlayer(),
+                            new HashSet<>(), ArenaState.OWO,
+                            DefaultConfig.getArenaSpaws(name.get(i))));
+        }
+        return arenas;
+    }
+
     public static Location getNpcSpanw() {
         Location location = new Location(Bukkit.getServer().getWorld(config.getString("npc_location.world")), config.getDouble("npc_location.x"), config.getDouble("npc_location.y"), config.getDouble("npc_location.z"));
         config.getDouble("npc_location.pitch");
@@ -119,4 +122,5 @@ public class DefaultConfig {
 
         return location;
     }
+
 }

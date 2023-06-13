@@ -11,9 +11,13 @@ import ro.mihaaiiii.gamesurvival.model.PlayerStatusBuilder;
 
 
 public class ArenaPlayerDeathEvents implements Listener {
+    int loss_point;
+    int winn_point;
     GameSurvival plugin;
 
+
     public ArenaPlayerDeathEvents(GameSurvival plugin) {
+
         this.plugin = plugin;
 
     }
@@ -21,19 +25,21 @@ public class ArenaPlayerDeathEvents implements Listener {
 
     @EventHandler
     public void ArenaDeathEvent(PlayerDeathEvent event) {
-
         Player player = event.getPlayer();
-        Player killer = player.getKiller();
-        if(player.isFlying())
-        {return;}
-        PlayerStatus playerStatus = new PlayerStatusBuilder().
-                getOwner(player.getUniqueId().toString()).
-                getWins(plugin.getDataBasesFactory().getRepository().getWins(player.getUniqueId().toString()) + 2).
-                getLoss(1).
-                getKills(player.getStatistic(Statistic.PLAYER_KILLS)).
-                getdDeaths(player.getStatistic(Statistic.DEATHS)).
-                build();
-        plugin.getDataBasesFactory().getRepository().insertPlayer(playerStatus.getOwner(), playerStatus.getWins(), playerStatus.getLoss(), playerStatus.getKills(), playerStatus.getDeaths());
+        if (player.isDead()) {
+            int loss = plugin.getDataBasesFactory().getRepository().getLoss(player.getUniqueId().toString());
+            PlayerStatus playerStatus = new PlayerStatusBuilder().
+                    getOwner(player.getUniqueId().toString()).
+                    getWins(plugin.getDataBasesFactory().getRepository().getWins(player.getUniqueId().toString())).
+                    getLoss(loss + 1).
+                    getKills(player.getStatistic(Statistic.PLAYER_KILLS)).
+                    getdDeaths(player.getStatistic(Statistic.DEATHS)).
+                    build();
+
+            plugin.getDataBasesFactory().getRepository().insertPlayer(playerStatus.getOwner(), playerStatus.getWins(), playerStatus.getLoss(), playerStatus.getKills(), playerStatus.getDeaths());
+
+        }
+
 
     }
 

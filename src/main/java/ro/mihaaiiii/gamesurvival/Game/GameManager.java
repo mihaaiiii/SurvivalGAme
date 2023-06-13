@@ -4,13 +4,9 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import ro.mihaaiiii.gamesurvival.GameManager.ArenaManager;
-import ro.mihaaiiii.gamesurvival.GameManager.chestSetUp.ChestFactory;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 import ro.mihaaiiii.gamesurvival.model.Arena;
 import ro.mihaaiiii.gamesurvival.model.ArenaState;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class GameManager {
 
@@ -19,41 +15,35 @@ public class GameManager {
     private Arena arena;
     @Getter
     private ArenaManager arenaManager;
-    private ChestFactory chestFactory;
-    Map<Integer, Arena> arenas = new HashMap<>();
+    private ArenaState arenaState;
 
 
     public GameManager(GameSurvival plugin) {
         this.plugin = plugin;
-        arenaManager = ArenaManager.getInstance(plugin);
+        arenaManager = new ArenaManager();
         arena = arenaManager.getArena();
-        gameState(arena.getArenaState());
+        arenaState = arena.getArenaState();
 
     }
 
     public void gameState(ArenaState arenaState) {
-        arena.setArenaState(arenaState);
-        switch (arena.getArenaState()) {
+        this.arenaState = arenaState;
+        switch (arenaState) {
             case OWO -> {
 
             }
             case START -> {
                 //player teleprort to
                 arena.sendMessage("Arena is started");
-                System.out.println(ChatColor.RED + arenaManager.getArena().getPlayers().toString());
+                System.out.println(ChatColor.RED + arena.getPlayers().toString());
+                System.out.println(ChatColor.RED + arena.getNameArena() + " Is started");
                 arenaManager.startTimer();
             }
             case WAITING -> {
-                //player teleport to lobby arena
                 arena.setStarted(true);
                 arena.sendMessage(ChatColor.GRAY + "Arena is waitng");
-                arenaManager.getArena().arenaPlayer();
-
-                arena.sendMessage(ChatColor.GRAY + "Arena is started");
-                arenaManager.teleportPlayersToArena();
+                arena.arenaPlayer();
                 arenaManager.startCountdown();
-                //chest fill
-                // teleport player
             }
             case RELOAD -> {
                 arena.sendMessage("Arena reload");
@@ -61,10 +51,10 @@ public class GameManager {
             case STOP -> {
                 arena.sendMessage(ChatColor.GRAY + "Am sters din arena");
                 arenaManager.teleportToSpawn();
-                arenaManager.getArena().removePlayerFromArena();
+                arenaManager.removePlayerFromArena();
+                arena.setStarted(false);
                 arena.sendMessage(ChatColor.GRAY + "Arena is stopped");
-                System.out.println(ChatColor.GRAY + " " + arenaManager.getArena().arenaPlayer());
-                arenaManager.getArena().setArenaState(ArenaState.OWO);
+                arena.setArenaState(ArenaState.OWO);
 
             }
             default -> {

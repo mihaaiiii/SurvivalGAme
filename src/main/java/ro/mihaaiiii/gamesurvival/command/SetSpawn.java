@@ -5,24 +5,23 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
-import ro.mihaaiiii.gamesurvival.fileManager.DefaultConfig;
+
+import java.util.Objects;
 
 public class SetSpawn implements CommandExecutor {
-    private DefaultConfig defaultConfig;
-    private GameSurvival plugin;
+    private final GameSurvival plugin;
 
     public SetSpawn(GameSurvival plugin) {
         this.plugin = plugin;
 
-        plugin.getCommand("set_spawn").setExecutor(this);
+        Objects.requireNonNull(plugin.getCommand("set_spawn")).setExecutor(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return false;
         }
-        Player player = (Player) sender;
         plugin.saveDefaultConfig();
         plugin.getConfig().set("lobyArena.world", player.getWorld().getName());
         plugin.getConfig().set("lobyArena.x", player.getLocation().getBlockX());

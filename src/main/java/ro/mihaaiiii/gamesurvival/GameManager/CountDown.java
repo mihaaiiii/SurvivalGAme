@@ -11,7 +11,7 @@ import ro.mihaaiiii.gamesurvival.model.ArenaState;
 
 public class CountDown extends BukkitRunnable {
     private static CountDown countDown;
-    private GameSurvival plugin;
+    private static GameSurvival plugin;
 
     private GameManager gameManager;
 
@@ -20,19 +20,17 @@ public class CountDown extends BukkitRunnable {
 
     public CountDown(GameSurvival plugin) {
         this.plugin = plugin;
-        countDown = this;
-        gameManager = GameManager.getInstance(plugin);
-
 
     }
 
     public void start() {
+        gameManager = GameManager.getInstance(plugin);
         gameManager.getArenaManager().chestFill();
         runTaskTimer(plugin, 0, 20);
     }
 
     public static CountDown getContdown() {
-        return countDown;
+        return new CountDown(plugin);
     }
 
     @Override
@@ -42,14 +40,17 @@ public class CountDown extends BukkitRunnable {
             if (this != null) {
                 cancel();
             }
-
             WorldBorder worldBorder = Bukkit.getServer().getWorld("test").getWorldBorder();
             worldBorder.setSize(60);
             worldBorder.setCenter(new Location(Bukkit.getServer().getWorld("test"), -527, 72, 32));
             worldBorder.setSize(3, 60);
             worldBorder.setWarningDistance(40);
             worldBorder.setDamageAmount(0.2);
+            gameManager.getArenaManager().teleportPlayersToArena(); // trebuie sa teleportez jucatorii inainte de a se opri timerul
             gameManager.getArenaManager().getArena().sendMessage(ChatColor.RED + "teleport Player");
+            if (!gameManager.getArenaManager().isFull()) {
+                start();
+            }
             gameManager.getArenaManager().getArena().setArenaState(ArenaState.START);
             gameManager.gameState(gameManager.getArenaManager().getArena().getArenaState());
 

@@ -3,7 +3,6 @@ package ro.mihaaiiii.gamesurvival.GameManager.chestSetUp;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
-import ro.mihaaiiii.gamesurvival.GameSurvival;
 import ro.mihaaiiii.gamesurvival.fileManager.DefaultConfig;
 
 import java.util.ArrayList;
@@ -11,41 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ChestFactory {
-    private GameSurvival plugin;
-    private ChestItmes chest;
-
-    public ChestFactory(GameSurvival plugin) {
-        this.plugin = plugin;
-        this.chest = chest;
-//        setTipeChest(chestType);
-
-
-    }
-
-//    public void setTipeChest(String chestType) {
-//        switch (chestType) {
-//            case "epic" -> {
-//                chest = new RareChest(plugin);
-//                chest.addItems("epic");
-//
-//            }
-//            case "rare" -> {
-//                chest = new RareChest(plugin);
-//                chest.addItems("rare");
-//            }
-//            case "legendary" -> {
-//                chest = new RareChest(plugin);
-//                chest.addItems("legendary");
-//            }
-//            default -> {
-//                chest = new RareChest(plugin);
-//                chest.addItems("common");
-//            }
-//
-//        }
-//    }
-
-
     public void addItemsInChest(String tipe) {
 
         DefaultConfig.getChestLocation(tipe).forEach(location -> {

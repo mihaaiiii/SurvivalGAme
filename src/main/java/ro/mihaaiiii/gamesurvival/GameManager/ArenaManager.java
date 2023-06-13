@@ -2,14 +2,14 @@ package ro.mihaaiiii.gamesurvival.GameManager;
 
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
 import ro.mihaaiiii.gamesurvival.GameManager.chestSetUp.ChestFactory;
 import ro.mihaaiiii.gamesurvival.GameSurvival;
 import ro.mihaaiiii.gamesurvival.fileManager.DefaultConfig;
 import ro.mihaaiiii.gamesurvival.model.Arena;
 import ro.mihaaiiii.gamesurvival.model.ArenaState;
 
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class ArenaManager {
@@ -17,39 +17,35 @@ public class ArenaManager {
     @Getter
     private Arena arena;
     @Getter
-    private ChestFactory common;
-    private ChestFactory rare;
-    private ChestFactory epic;
-    private ChestFactory legendary;
+    private final ChestFactory common;
+    private final ChestFactory rare;
+    private final ChestFactory epic;
+    private final ChestFactory legendary;
     @Getter
-    private int count = 0;
-    private GameSurvival plugin;
-
+    private final int count = 0;
+    private final GameSurvival plugin;
+    @Getter
     private CountDown countDown;
-
-
+    @Getter
     private ArenaTimer timer;
 
-    private static ArenaManager arenaInstance;
 
-    public ArenaManager(GameSurvival plugin) {
-        this.plugin = plugin;
-        arena = startArena("arena1");
+    public ArenaManager() {
+        plugin = GameSurvival.getPlugin(GameSurvival.class);
+        String nameAr = "arena1";
+        common = new ChestFactory();
+        rare = new ChestFactory();
+        epic = new ChestFactory();
+        legendary = new ChestFactory();
+        timer = new ArenaTimer();
+        countDown = new CountDown(plugin);
 
-        common = new ChestFactory(plugin);
-//        rare = new ChestFactory(plugin);
-//        epic = new ChestFactory(plugin);
-//        legendary = new ChestFactory(plugin);
-
-        this.countDown = CountDown.getContdown();
-        arena.setMaxPlayers(plugin.getConfig().getInt("max_player_arena"));
+        Map<String, Arena> arenaMap = DefaultConfig.fllWhitArena();
+        if (arenaMap.containsKey(nameAr)) {
+            arena = arenaMap.get(nameAr);
+        }
 
 
-    }
-
-    public Arena startArena(String name) {
-
-        return new Arena(name, false, 2, new HashSet<>(), ArenaState.OWO, DefaultConfig.getArenaSpaws(name));
     }
 
 
@@ -57,10 +53,10 @@ public class ArenaManager {
         return arena.getPlayers().size() == arena.getMaxPlayers();
     }
 
-    public void removePlayer(Player player) {
-
-        arena.arenaPlayer().remove(player);
-        arena.arenaPlayer().remove(player.getUniqueId().toString());
+    public void removePlayerFromArena() {
+        System.out.println(ChatColor.BLUE + "Arena is cleaning");
+        arena.getPlayers().clear();
+        arena.arenaPlayer().clear();
     }
 
     public void startCountdown() {
@@ -75,30 +71,25 @@ public class ArenaManager {
     }
 
     public void startTimer() {
-        timer = new ArenaTimer(plugin);
-        timer.start();
+        timer = new ArenaTimer();
+        timer.start(plugin);
     }
 
     public boolean isWaitingOrIsStop() {
         return arena.getArenaState() == ArenaState.STOP || arena.getArenaState() == ArenaState.WAITING;
     }
 
-    public boolean isWaitingOrIsStopOrIsStarted() {
-        return arena.getArenaState() == ArenaState.STOP || arena.getArenaState() == ArenaState.WAITING || arena.getArenaState() == ArenaState.START;
-    }
-
 
     public void chestFill() {
-        System.out.println(ChatColor.BLUE + "merge");
-
         common.addItemsInChest("common");
-//        epic.addItemsInChest("epic");
-//        rare.addItemsInChest("rare");
-//        legendary.addItemsInChest("legendary");
-
+        epic.addItemsInChest("epic");
+        rare.addItemsInChest("rare");
+        legendary.addItemsInChest("legendary");
+        System.out.println(ChatColor.BLUE + "All chest items is filled ");
     }
 
     public void teleportPlayersToArena() {
+        System.out.println(arena.arenaPlayer().size());
         if (arena.isStarted()) {
             for (int i = 0; i < arena.arenaPlayer().size(); i++) {
                 arena.arenaPlayer().get(i).teleport(arena.getSpawnPlayer().get(i));
@@ -106,23 +97,12 @@ public class ArenaManager {
         }
     }
 
-    public void teleportPlayersToLobbyArena() {
-        if (arena.isStarted()) {
-            for (int i = 0; i < arena.arenaPlayer().size(); i++) {
-                arena.arenaPlayer().get(i).teleport(DefaultConfig.getLobby());
-            }
-        }
-    }
 
     public void teleportToSpawn() {
         for (int i = 0; i < arena.arenaPlayer().size(); i++) {
-            arena.arenaPlayer().get(i).teleport(plugin.getServer().getWorld("world").getSpawnLocation());
+            arena.arenaPlayer().get(i).teleport(Objects.requireNonNull(plugin.getServer().getWorld("world")).getSpawnLocation());
         }
     }
 
-
-    public static ArenaManager getInstance(GameSurvival plugin) {
-        return arenaInstance == null ? arenaInstance = new ArenaManager(plugin) : arenaInstance;
-    }
 
 }
